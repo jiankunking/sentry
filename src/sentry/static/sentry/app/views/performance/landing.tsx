@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import {Location} from 'history';
 
 import {t} from 'app/locale';
 import {Organization} from 'app/types';
@@ -9,11 +10,27 @@ import GlobalSelectionHeader from 'app/components/organizations/globalSelectionH
 import {PageContent} from 'app/styles/organization';
 import NoProjectMessage from 'app/components/noProjectMessage';
 
+import EventView from 'app/views/eventsV2/eventView';
+
 type Props = {
   organization: Organization;
+  location: Location;
 };
 
-class PerformanceLanding extends React.Component<Props> {
+type State = {
+  eventView: EventView;
+};
+
+class PerformanceLanding extends React.Component<Props, State> {
+  static getDerivedStateFromProps(nextProps: Props, prevState: State): State {
+    const eventView = EventView.fromLocation(nextProps.location);
+    return {...prevState, eventView};
+  }
+
+  state = {
+    eventView: EventView.fromLocation(this.props.location),
+  };
+
   render() {
     const {organization} = this.props;
 
