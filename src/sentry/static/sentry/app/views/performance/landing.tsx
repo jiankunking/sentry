@@ -10,8 +10,9 @@ import SentryDocumentTitle from 'app/components/sentryDocumentTitle';
 import GlobalSelectionHeader from 'app/components/organizations/globalSelectionHeader';
 import {PageContent} from 'app/styles/organization';
 import NoProjectMessage from 'app/components/noProjectMessage';
-
 import EventView from 'app/views/eventsV2/eventView';
+
+import Table from './table';
 
 type Props = {
   organization: Organization;
@@ -43,6 +44,7 @@ class PerformanceLanding extends React.Component<Props, State> {
             <NoProjectMessage organization={organization}>
               <PageContent>
                 <StyledPageHeader>{t('Performance')}</StyledPageHeader>
+                <Table />
               </PageContent>
             </NoProjectMessage>
           </StyledPageContent>
