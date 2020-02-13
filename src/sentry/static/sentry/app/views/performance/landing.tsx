@@ -34,7 +34,7 @@ class PerformanceLanding extends React.Component<Props, State> {
   };
 
   render() {
-    const {organization} = this.props;
+    const {organization, location} = this.props;
 
     return (
       <SentryDocumentTitle title={t('Performance')} objSlug={organization.slug}>
@@ -44,7 +44,11 @@ class PerformanceLanding extends React.Component<Props, State> {
             <NoProjectMessage organization={organization}>
               <PageContent>
                 <StyledPageHeader>{t('Performance')}</StyledPageHeader>
-                <Table />
+                <Table
+                  eventView={this.state.eventView}
+                  organization={organization}
+                  location={location}
+                />
               </PageContent>
             </NoProjectMessage>
           </StyledPageContent>
