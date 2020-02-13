@@ -4,10 +4,19 @@ import {NewQuery} from 'app/types';
 export const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
   id: undefined,
   name: t('Performance'),
-  query: '',
+  query: 'event.type:transaction',
   projects: [],
-  fields: ['title', 'event.type', 'project', 'user', 'timestamp'],
-  orderby: '-timestamp',
+  fields: [
+    'transaction',
+    'project',
+    // TODO: rpm()
+    'error_rate',
+    'p95()',
+    'avg(transaction.duration)',
+    'apdex',
+    'impact',
+  ],
+  orderby: '-avg_transaction_duration',
   version: 2,
   range: '24h',
 };
