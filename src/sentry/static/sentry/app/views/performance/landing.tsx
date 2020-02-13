@@ -12,6 +12,7 @@ import {PageContent} from 'app/styles/organization';
 import NoProjectMessage from 'app/components/noProjectMessage';
 import EventView from 'app/views/eventsV2/eventView';
 
+import {PERFORMANCE_EVENT_VIEW} from './data';
 import Table from './table';
 
 type Props = {
@@ -25,12 +26,18 @@ type State = {
 
 class PerformanceLanding extends React.Component<Props, State> {
   static getDerivedStateFromProps(nextProps: Props, prevState: State): State {
-    const eventView = EventView.fromLocation(nextProps.location);
+    const eventView = EventView.fromNewQueryWithLocation(
+      PERFORMANCE_EVENT_VIEW,
+      nextProps.location
+    );
     return {...prevState, eventView};
   }
 
   state = {
-    eventView: EventView.fromLocation(this.props.location),
+    eventView: EventView.fromNewQueryWithLocation(
+      PERFORMANCE_EVENT_VIEW,
+      this.props.location
+    ),
   };
 
   render() {
