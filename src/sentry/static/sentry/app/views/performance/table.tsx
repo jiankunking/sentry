@@ -1,5 +1,5 @@
 import React from 'react';
-import {Location, LocationDescriptor} from 'history';
+import {Location, LocationDescriptorObject} from 'history';
 import styled from '@emotion/styled';
 import omit from 'lodash/omit';
 
@@ -225,7 +225,7 @@ class Table extends React.Component<Props, State> {
   };
 
   generateSortLink = (field: Field, tableDataMeta?: MetaType) => ():
-    | LocationDescriptor
+    | LocationDescriptorObject
     | undefined => {
     const {eventView} = this.props;
 

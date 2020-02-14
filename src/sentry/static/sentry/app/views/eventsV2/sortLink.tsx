@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import {Location, LocationDescriptor} from 'history';
+import {Location, LocationDescriptorObject} from 'history';
 import omit from 'lodash/omit';
 
 import InlineSvg from 'app/components/inlineSvg';
@@ -18,7 +18,7 @@ type Props = {
   location: Location;
   eventView: EventView;
   tableDataMeta?: MetaType; // Will not be defined if data is not loaded
-  getTarget?: () => LocationDescriptor | undefined;
+  getTarget?: () => LocationDescriptorObject | undefined;
 };
 
 class SortLink extends React.Component<Props> {
@@ -39,7 +39,7 @@ class SortLink extends React.Component<Props> {
     return eventView.isFieldSorted(field, tableDataMeta);
   }
 
-  getTarget(): LocationDescriptor | undefined {
+  getTarget(): LocationDescriptorObject | undefined {
     const {location, field, eventView, tableDataMeta, getTarget} = this.props;
 
     if (getTarget && typeof getTarget === 'function') {
