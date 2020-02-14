@@ -12,7 +12,7 @@ import {Panel, PanelHeader, PanelItem} from 'app/components/panels';
 import LoadingIndicator from 'app/components/loadingIndicator';
 import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
-import EventView from 'app/views/eventsV2/eventView';
+import EventView, {isAPIPayloadSimilar} from 'app/views/eventsV2/eventView';
 import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/types';
 import {getFieldRenderer, MetaType, getAggregateAlias} from 'app/views/eventsV2/utils';
 
@@ -44,6 +44,24 @@ class Table extends React.Component<Props, State> {
   componentDidMount() {
     this.fetchData();
   }
+
+  componentDidUpdate(prevProps: Props) {
+    // Reload data if we aren't already loading, or if we've moved
+    // from an invalid view state to a valid one.
+    if (
+      (!this.state.isLoading && this.shouldRefetchData(prevProps)) ||
+      (prevProps.eventView.isValid() === false && this.props.eventView.isValid())
+    ) {
+      this.fetchData();
+    }
+  }
+
+  shouldRefetchData = (prevProps: Props): boolean => {
+    const thisAPIPayload = this.props.eventView.getEventsAPIPayload(this.props.location);
+    const otherAPIPayload = prevProps.eventView.getEventsAPIPayload(prevProps.location);
+
+    return !isAPIPayloadSimilar(thisAPIPayload, otherAPIPayload);
+  };
 
   fetchData = () => {
     const {eventView, organization, location} = this.props;

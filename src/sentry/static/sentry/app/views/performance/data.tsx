@@ -1,7 +1,8 @@
 import {t} from 'app/locale';
 import {NewQuery} from 'app/types';
+import {Location} from 'history';
 
-export const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
+const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
   id: undefined,
   name: t('Performance'),
   query: 'event.type:transaction',
@@ -19,5 +20,15 @@ export const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
   ],
   orderby: '-avg_transaction_duration',
   version: 2,
-  range: '24h',
 };
+
+export function generatePerformanceQuery(location: Location): Readonly<NewQuery> {
+  if (!location.query.statsPeriod) {
+    return {
+      ...PERFORMANCE_EVENT_VIEW,
+      range: '24h',
+    };
+  }
+
+  return PERFORMANCE_EVENT_VIEW;
+}
