@@ -139,7 +139,9 @@ class Table extends React.Component<Props, State> {
           {columnOrder.map(column => {
             const fieldRenderer = getFieldRenderer(String(column.key), tableMeta);
             return (
-              <div key={column.key}>{fieldRenderer(row, {organization, location})}</div>
+              <ItemCell key={column.key}>
+                {fieldRenderer(row, {organization, location})}
+              </ItemCell>
             );
           })}
         </PanelRow>
@@ -150,6 +152,29 @@ class Table extends React.Component<Props, State> {
   render() {
     return (
       <div>
+        <Panel>
+          <FooGrid>
+            <HeadCell>{t('Transaction Name')}</HeadCell>
+            <HeadCell>{t('Project Name')}</HeadCell>
+            <HeadCell>{t('Throughput')}</HeadCell>
+            <HeadCell>
+              <NumericColumn>{t('Error Rate')}</NumericColumn>
+            </HeadCell>
+            <HeadCell>
+              <NumericColumn>{t('95th')}</NumericColumn>
+            </HeadCell>
+            <HeadCell>
+              <NumericColumn>{t('Avg')}</NumericColumn>
+            </HeadCell>
+            <HeadCell>
+              <NumericColumn>{t('Apdex')}</NumericColumn>
+            </HeadCell>
+            <HeadCell>
+              <NumericColumn>{t('User Impact')}</NumericColumn>
+            </HeadCell>
+            <div>foo</div>
+          </FooGrid>
+        </Panel>
         <Panel>
           <PanelHeader>
             <PanelRow>
@@ -163,13 +188,24 @@ class Table extends React.Component<Props, State> {
               <NumericColumn>{t('User Impact')}</NumericColumn>
             </PanelRow>
           </PanelHeader>
-          <PanelBody>{this.renderResults()}</PanelBody>
+          <PanelBody>foo</PanelBody>
         </Panel>
         <Pagination pageLinks={this.state.pageLinks} />
       </div>
     );
   }
 }
+
+const FooGrid = styled('div')`
+  display: grid;
+  grid-template-columns: 4fr 2fr repeat(6, 1fr);
+  width: 100%;
+  align-items: center;
+`;
+
+const HeadCell = styled(PanelHeader)`
+  background-color: ${p => p.theme.offWhite};
+`;
 
 const PanelRow = styled('div')`
   display: grid;
@@ -181,6 +217,10 @@ const PanelRow = styled('div')`
 
 const NumericColumn = styled('div')`
   text-align: right;
+`;
+
+const ItemCell = styled('div')`
+  text-overflow: ellipsis;
 `;
 
 export default withApi(Table);
