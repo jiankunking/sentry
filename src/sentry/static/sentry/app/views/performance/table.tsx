@@ -1,6 +1,7 @@
 import React from 'react';
-import {Location} from 'history';
+import {Location, LocationDescriptor} from 'history';
 import styled from '@emotion/styled';
+import omit from 'lodash/omit';
 
 import {t} from 'app/locale';
 import {Organization} from 'app/types';
@@ -13,8 +14,10 @@ import LoadingIndicator from 'app/components/loadingIndicator';
 import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
 import Link from 'app/components/links/link';
-import EventView, {isAPIPayloadSimilar} from 'app/views/eventsV2/eventView';
+import EventView, {isAPIPayloadSimilar, Field} from 'app/views/eventsV2/eventView';
+import SortLink, {Alignments} from 'app/views/eventsV2/sortLink';
 import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/types';
+import {ColumnValueType} from 'app/views/eventsV2/eventQueryParams';
 import {getFieldRenderer, MetaType, getAggregateAlias} from 'app/views/eventsV2/utils';
 import {
   generateEventDetailsRoute,
@@ -221,29 +224,75 @@ class Table extends React.Component<Props, State> {
     });
   };
 
+  generateSortLink = (field: Field, tableDataMeta?: MetaType) => ():
+    | LocationDescriptor
+    | undefined => {
+    const {eventView} = this.props;
+
+    if (!tableDataMeta) {
+      return undefined;
+    }
+
+    const nextEventView = eventView.sortOnField(field, tableDataMeta);
+    const queryStringObject = nextEventView.generateQueryStringObject();
+
+    const omitKeys = ['widths', 'query', 'name', 'field'];
+
+    return {
+      ...location,
+      query: omit(queryStringObject, omitKeys),
+    };
+  };
+
+  renderHeader = () => {
+    const {location, eventView} = this.props;
+    const {tableData} = this.state;
+
+    const columnOrder = this.props.eventView.getColumns();
+
+    const lastindex = columnOrder.length - 1;
+    return columnOrder.map((column, index) => {
+      const field = column.eventViewField;
+
+      // establish alignment based on the type
+      const alignedTypes: ColumnValueType[] = ['number', 'duration', 'integer'];
+      let align: Alignments = alignedTypes.includes(column.type) ? 'right' : 'left';
+
+      if (column.type === 'never' || column.type === '*') {
+        // fallback to align the column based on the table metadata
+        const maybeType =
+          tableData && tableData.meta
+            ? tableData.meta[getAggregateAlias(field.field)]
+            : undefined;
+
+        if (maybeType === 'integer' || maybeType === 'number') {
+          align = 'right';
+        }
+      }
+
+      const tableDataMeta = tableData && tableData.meta ? tableData.meta : undefined;
+
+      return (
+        <HeadCell key={index} first={index === 0} last={lastindex === index}>
+          <SortLink
+            align={align}
+            field={field}
+            location={location}
+            eventView={eventView}
+            tableDataMeta={tableDataMeta}
+            getTarget={this.generateSortLink(field, tableDataMeta)}
+          />
+        </HeadCell>
+      );
+    });
+  };
+
   render() {
     return (
       <div>
         <Panel>
           <TableGrid>
-            <HeadCell first>{t('Transaction Name')}</HeadCell>
-            <HeadCell>{t('Project Name')}</HeadCell>
-            <HeadCell>{t('Throughput')}</HeadCell>
-            <HeadCell>
-              <NumericColumn>{t('Error Rate')}</NumericColumn>
-            </HeadCell>
-            <HeadCell>
-              <NumericColumn>{t('95th')}</NumericColumn>
-            </HeadCell>
-            <HeadCell>
-              <NumericColumn>{t('Avg')}</NumericColumn>
-            </HeadCell>
-            <HeadCell>
-              <NumericColumn>{t('Apdex')}</NumericColumn>
-            </HeadCell>
-            <HeadCell last>
-              <NumericColumn>{t('User Impact')}</NumericColumn>
-            </HeadCell>
+            {this.renderHeader()}
             {this.renderResults()}
           </TableGrid>
         </Panel>
@@ -255,12 +304,14 @@ class Table extends React.Component<Props, State> {
 
 const TableGrid = styled('div')`
   display: grid;
-  grid-template-columns: 5fr repeat(7, minmax(50px, 1fr));
+  grid-template-columns: auto repeat(7, minmax(50px, max-content));
   width: 100%;
 `;
 
 const HeadCell = styled(PanelHeader)<{first?: boolean; last?: boolean}>`
   background-color: ${p => p.theme.offWhite};
+
+  display: block;
   text-overflow: ellipsis;
 
   padding: ${props => {

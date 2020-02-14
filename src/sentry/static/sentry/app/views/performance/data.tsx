@@ -18,17 +18,27 @@ const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
     'apdex',
     'impact',
   ],
-  orderby: '-avg_transaction_duration',
   version: 2,
 };
 
 export function generatePerformanceQuery(location: Location): Readonly<NewQuery> {
+  const extra: {[key: string]: string} = {};
+
   if (!location.query.statsPeriod) {
-    return {
-      ...PERFORMANCE_EVENT_VIEW,
-      range: '24h',
-    };
+    extra.range = '24h';
   }
 
-  return PERFORMANCE_EVENT_VIEW;
+  if (!location.query.sort) {
+    extra.orderby = '-avg_transaction_duration';
+  } else {
+    const sort = location.query.sort;
+    extra.orderby =
+      Array.isArray(sort) && sort.length > 0
+        ? sort[sort.length - 1]
+        : typeof sort === 'string'
+        ? sort
+        : '-avg_transaction_duration';
+  }
+
+  return Object.assign({}, PERFORMANCE_EVENT_VIEW, extra);
 }
