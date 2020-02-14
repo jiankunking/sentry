@@ -12,9 +12,14 @@ import {Panel, PanelHeader, PanelItem} from 'app/components/panels';
 import LoadingIndicator from 'app/components/loadingIndicator';
 import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
+import Link from 'app/components/links/link';
 import EventView, {isAPIPayloadSimilar} from 'app/views/eventsV2/eventView';
 import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/types';
 import {getFieldRenderer, MetaType, getAggregateAlias} from 'app/views/eventsV2/utils';
+import {
+  generateEventDetailsRoute,
+  generateEventSlug,
+} from 'app/views/eventsV2/eventDetails/utils';
 
 type Props = {
   api: Client;
@@ -158,7 +163,8 @@ class Table extends React.Component<Props, State> {
     tableMeta: MetaType,
     isLastRow: boolean
   ) => {
-    const {organization, location} = this.props;
+    const {organization, location, eventView} = this.props;
+
     const lastIndex = columnOrder.length - 1;
     return columnOrder.map((column, index) => {
       const field = String(column.key);
@@ -166,10 +172,27 @@ class Table extends React.Component<Props, State> {
       const fieldType = tableMeta[fieldName];
 
       const fieldRenderer = getFieldRenderer(field, tableMeta);
-      const rendered = fieldRenderer(row, {organization, location});
+      let rendered = fieldRenderer(row, {organization, location});
 
       const isFirstCell = index === 0;
       const isLastCell = index === lastIndex;
+
+      if (isFirstCell) {
+        // the first column of the row should link to the transaction details view
+        // on Discover
+
+        const eventSlug = generateEventSlug(row);
+        const pathname = generateEventDetailsRoute({
+          orgSlug: organization.slug,
+          eventSlug,
+        });
+
+        const target = {
+          pathname,
+          query: eventView.generateQueryStringObject(),
+        };
+        rendered = <Link to={target}>{rendered}</Link>;
+      }
 
       const isNumeric = ['integer', 'number', 'duration'].includes(fieldType);
       if (isNumeric) {
