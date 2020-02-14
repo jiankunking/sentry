@@ -2,7 +2,7 @@ import {t} from 'app/locale';
 import {NewQuery} from 'app/types';
 import {Location} from 'history';
 
-const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
+export const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
   id: undefined,
   name: t('Performance'),
   query: 'event.type:transaction',
@@ -24,14 +24,16 @@ const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
 export function generatePerformanceQuery(location: Location): Readonly<NewQuery> {
   const extra: {[key: string]: string} = {};
 
-  if (!location.query.statsPeriod) {
+  const {query} = location;
+
+  if (!query?.statsPeriod) {
     extra.range = '24h';
   }
 
-  if (!location.query.sort) {
+  if (!query?.sort) {
     extra.orderby = '-avg_transaction_duration';
   } else {
-    const sort = location.query.sort;
+    const sort = query?.sort;
     extra.orderby =
       Array.isArray(sort) && sort.length > 0
         ? sort[sort.length - 1]
