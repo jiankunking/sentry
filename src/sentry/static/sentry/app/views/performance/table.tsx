@@ -4,7 +4,9 @@ import {Location} from 'history';
 import {Organization} from 'app/types';
 import {Client} from 'app/api';
 import withApi from 'app/utils/withApi';
+import {Panel, PanelHeader, PanelBody, PanelItem} from 'app/components/panels';
 import EventView from 'app/views/eventsV2/eventView';
+import LoadingIndicator from 'app/components/loadingIndicator';
 
 type Props = {
   api: Client;
@@ -83,9 +85,29 @@ class Table extends React.Component<Props, State> {
       });
   };
 
+  renderResults = () => {
+    if (this.state.isLoading) {
+      return <LoadingIndicator />;
+    }
+
+    return (
+      <React.Fragment>
+        <PanelItem>Panel Item</PanelItem>
+        <PanelItem>Panel Item</PanelItem>
+        <PanelItem>Panel Item</PanelItem>
+      </React.Fragment>
+    );
+  };
+
   render() {
     console.log('tableData', this.state);
-    return <div>table</div>;
+    return (
+      <Panel>
+        <PanelHeader>Panel Header</PanelHeader>
+
+        <PanelBody>{this.renderResults()}</PanelBody>
+      </Panel>
+    );
   }
 }
 
