@@ -14,7 +14,7 @@ import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
 import EventView from 'app/views/eventsV2/eventView';
 import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/types';
-import {getFieldRenderer, MetaType} from 'app/views/eventsV2/utils';
+import {getFieldRenderer, MetaType, getAggregateAlias} from 'app/views/eventsV2/utils';
 
 type Props = {
   api: Client;
@@ -139,10 +139,25 @@ class Table extends React.Component<Props, State> {
     const {organization, location} = this.props;
     const lastIndex = columnOrder.length - 1;
     return columnOrder.map((column, index) => {
-      const fieldRenderer = getFieldRenderer(String(column.key), tableMeta);
+      const field = String(column.key);
+      const fieldName = getAggregateAlias(field);
+      const fieldType = tableMeta[fieldName];
+
+      const fieldRenderer = getFieldRenderer(field, tableMeta);
+      const rendered = fieldRenderer(row, {organization, location});
+
+      const isNumeric = ['integer', 'number', 'duration'].includes(fieldType);
+      if (isNumeric) {
+        return (
+          <BodyCell key={column.key} first={index === 0} last={index === lastIndex}>
+            <NumericColumn>{rendered}</NumericColumn>
+          </BodyCell>
+        );
+      }
+
       return (
         <BodyCell key={column.key} first={index === 0} last={index === lastIndex}>
-          {fieldRenderer(row, {organization, location})}
+          {rendered}
         </BodyCell>
       );
     });
