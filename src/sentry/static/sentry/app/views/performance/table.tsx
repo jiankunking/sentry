@@ -1,12 +1,18 @@
 import React from 'react';
 import {Location} from 'history';
+import styled from '@emotion/styled';
 
+import {t} from 'app/locale';
 import {Organization} from 'app/types';
 import {Client} from 'app/api';
 import withApi from 'app/utils/withApi';
+import space from 'app/styles/space';
 import {Panel, PanelHeader, PanelBody, PanelItem} from 'app/components/panels';
-import EventView from 'app/views/eventsV2/eventView';
 import LoadingIndicator from 'app/components/loadingIndicator';
+import EmptyStateWarning from 'app/components/emptyStateWarning';
+import Pagination from 'app/components/pagination';
+import EventView from 'app/views/eventsV2/eventView';
+import {TableData} from 'app/views/eventsV2/table/types';
 
 type Props = {
   api: Client;
@@ -20,7 +26,7 @@ type State = {
   tableFetchID: symbol | undefined;
   error: null | string;
   pageLinks: null | string;
-  tableData: any | null | undefined;
+  tableData: TableData | null | undefined;
 };
 
 class Table extends React.Component<Props, State> {
@@ -90,6 +96,19 @@ class Table extends React.Component<Props, State> {
       return <LoadingIndicator />;
     }
 
+    const hasResults =
+      this.state.tableData &&
+      this.state.tableData.data &&
+      this.state.tableData.data.length > 0;
+
+    if (!hasResults) {
+      return (
+        <EmptyStateWarning>
+          <p>{t('No transactions found')}</p>
+        </EmptyStateWarning>
+      );
+    }
+
     return (
       <React.Fragment>
         <PanelItem>Panel Item</PanelItem>
@@ -100,15 +119,24 @@ class Table extends React.Component<Props, State> {
   };
 
   render() {
-    console.log('tableData', this.state);
     return (
-      <Panel>
-        <PanelHeader>Panel Header</PanelHeader>
-
-        <PanelBody>{this.renderResults()}</PanelBody>
-      </Panel>
+      <div>
+        <Panel>
+          <PanelHeader>Panel Header</PanelHeader>
+          <PanelBody>{this.renderResults()}</PanelBody>
+        </Panel>
+        <Pagination pageLinks={this.state.pageLinks} />
+      </div>
     );
   }
 }
+
+const RowItem = styled('div')`
+  display: grid;
+  grid-template-columns: 4fr 1fr 2fr 1fr 1fr;
+  grid-column-gap: ${space(1.5)};
+  width: 100%;
+  align-items: center;
+`;
 
 export default withApi(Table);
