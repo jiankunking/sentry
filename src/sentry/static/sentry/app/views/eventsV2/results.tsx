@@ -188,7 +188,7 @@ class Results extends React.Component<Props, State> {
 
   renderError = error => {
     if (!error) {
-      return '';
+      return null;
     }
     return (
       <Alert type="error" icon="icon-circle-exclamation">

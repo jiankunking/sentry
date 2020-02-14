@@ -223,7 +223,7 @@ class TableView extends React.Component<TableViewProps> {
     if (isHeader) {
       return [<StyledIconStack key="header-icon" src="icon-stack" size="14px" />];
     }
-    const {organization, location} = this.props;
+    const {organization, eventView} = this.props;
     const eventSlug = generateEventSlug(dataRow);
     const pathname = generateEventDetailsRoute({
       orgSlug: organization.slug,
@@ -231,7 +231,7 @@ class TableView extends React.Component<TableViewProps> {
     });
     const target = {
       pathname,
-      query: {...location.query},
+      query: eventView.generateQueryStringObject(),
     };
 
     return [
