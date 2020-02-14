@@ -26,6 +26,7 @@ type Props = {
   eventView: EventView;
   organization: Organization;
   location: Location;
+  setError: (msg: string | undefined) => void;
 };
 
 type State = {
@@ -69,7 +70,7 @@ class Table extends React.Component<Props, State> {
   };
 
   fetchData = () => {
-    const {eventView, organization, location} = this.props;
+    const {eventView, organization, location, setError} = this.props;
 
     if (!eventView.isValid()) {
       return;
@@ -111,8 +112,7 @@ class Table extends React.Component<Props, State> {
           pageLinks: null,
           tableData: null,
         });
-        // TODO: implement
-        // setError(err.responseJSON.detail);
+        setError(err.responseJSON.detail);
       });
   };
 

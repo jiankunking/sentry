@@ -10,6 +10,7 @@ import SentryDocumentTitle from 'app/components/sentryDocumentTitle';
 import GlobalSelectionHeader from 'app/components/organizations/globalSelectionHeader';
 import {PageContent} from 'app/styles/organization';
 import NoProjectMessage from 'app/components/noProjectMessage';
+import Alert from 'app/components/alert';
 import EventView from 'app/views/eventsV2/eventView';
 
 import {generatePerformanceQuery} from './data';
@@ -22,6 +23,7 @@ type Props = {
 
 type State = {
   eventView: EventView;
+  error: string | undefined;
 };
 
 function generatePerformanceEventView(location: Location): EventView {
@@ -29,12 +31,31 @@ function generatePerformanceEventView(location: Location): EventView {
 }
 
 class PerformanceLanding extends React.Component<Props, State> {
-  static getDerivedStateFromProps(nextProps: Props): State {
-    return {eventView: generatePerformanceEventView(nextProps.location)};
+  static getDerivedStateFromProps(nextProps: Props, prevState: State): State {
+    return {...prevState, eventView: generatePerformanceEventView(nextProps.location)};
   }
 
   state = {
     eventView: generatePerformanceEventView(this.props.location),
+    error: undefined,
+  };
+
+  renderError = () => {
+    const {error} = this.state;
+
+    if (!error) {
+      return null;
+    }
+
+    return (
+      <Alert type="error" icon="icon-circle-exclamation">
+        {error}
+      </Alert>
+    );
+  };
+
+  setError = (error: string | undefined) => {
+    this.setState({error});
   };
 
   render() {
@@ -47,10 +68,12 @@ class PerformanceLanding extends React.Component<Props, State> {
           <PageContent>
             <NoProjectMessage organization={organization}>
               <StyledPageHeader>{t('Performance')}</StyledPageHeader>
+              {this.renderError()}
               <Table
                 eventView={this.state.eventView}
                 organization={organization}
                 location={location}
+                setError={this.setError}
               />
             </NoProjectMessage>
           </PageContent>
