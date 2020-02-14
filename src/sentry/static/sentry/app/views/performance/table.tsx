@@ -14,6 +14,7 @@ import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
 import EventView from 'app/views/eventsV2/eventView';
 import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/types';
+import {getFieldRenderer, MetaType} from 'app/views/eventsV2/utils';
 
 type Props = {
   api: Client;
@@ -99,7 +100,8 @@ class Table extends React.Component<Props, State> {
       return <LoadingIndicator />;
     }
 
-    const hasResults = tableData && tableData.data && tableData.data.length > 0;
+    const hasResults =
+      tableData && tableData.data && tableData.meta && tableData.data.length > 0;
 
     if (!hasResults) {
       return (
@@ -109,24 +111,38 @@ class Table extends React.Component<Props, State> {
       );
     }
 
-    assert(this.state.tableData);
+    assert(tableData);
 
     const columnOrder = this.props.eventView.getColumns();
 
-    return this.state.tableData.data.map((row, index) => {
+    return tableData.data.map((row, index) => {
+      assert(tableData.meta);
       return (
         <React.Fragment key={index}>
-          {this.renderRowItem(row, columnOrder)}
+          {this.renderRowItem(row, columnOrder, tableData.meta)}
         </React.Fragment>
       );
     });
   };
 
-  renderRowItem = (row: TableDataRow, columnOrder: TableColumn<React.ReactText>[]) => {
-    // console.log('row', row, columnOrder);
+  renderRowItem = (
+    row: TableDataRow,
+    columnOrder: TableColumn<React.ReactText>[],
+    tableMeta: MetaType
+  ) => {
+    console.log('row', row, columnOrder);
+
+    const {organization, location} = this.props;
     return (
       <PanelItem>
-        <PanelRow>foo</PanelRow>
+        <PanelRow>
+          {columnOrder.map(column => {
+            const fieldRenderer = getFieldRenderer(String(column.key), tableMeta);
+            return (
+              <div key={column.key}>{fieldRenderer(row, {organization, location})}</div>
+            );
+          })}
+        </PanelRow>
       </PanelItem>
     );
   };
