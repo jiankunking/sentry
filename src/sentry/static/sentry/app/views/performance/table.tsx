@@ -8,7 +8,7 @@ import {assert} from 'app/types/utils';
 import {Client} from 'app/api';
 import withApi from 'app/utils/withApi';
 import space from 'app/styles/space';
-import {Panel, PanelHeader, PanelBody, PanelItem} from 'app/components/panels';
+import {Panel, PanelHeader, PanelItem} from 'app/components/panels';
 import LoadingIndicator from 'app/components/loadingIndicator';
 import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
@@ -97,7 +97,11 @@ class Table extends React.Component<Props, State> {
     const {isLoading, tableData} = this.state;
 
     if (isLoading) {
-      return <LoadingIndicator />;
+      return (
+        <SpanEntireRow>
+          <LoadingIndicator />
+        </SpanEntireRow>
+      );
     }
 
     const hasResults =
@@ -105,9 +109,11 @@ class Table extends React.Component<Props, State> {
 
     if (!hasResults) {
       return (
-        <EmptyStateWarning>
-          <p>{t('No transactions found')}</p>
-        </EmptyStateWarning>
+        <SpanEntireRow>
+          <EmptyStateWarning>
+            <p>{t('No transactions found')}</p>
+          </EmptyStateWarning>
+        </SpanEntireRow>
       );
     }
 
@@ -130,23 +136,16 @@ class Table extends React.Component<Props, State> {
     columnOrder: TableColumn<React.ReactText>[],
     tableMeta: MetaType
   ) => {
-    console.log('row', row, columnOrder);
-
     const {organization, location} = this.props;
-    return (
-      <PanelItem>
-        <PanelRow>
-          {columnOrder.map(column => {
-            const fieldRenderer = getFieldRenderer(String(column.key), tableMeta);
-            return (
-              <ItemCell key={column.key}>
-                {fieldRenderer(row, {organization, location})}
-              </ItemCell>
-            );
-          })}
-        </PanelRow>
-      </PanelItem>
-    );
+    const lastIndex = columnOrder.length - 1;
+    return columnOrder.map((column, index) => {
+      const fieldRenderer = getFieldRenderer(String(column.key), tableMeta);
+      return (
+        <BodyCell key={column.key} first={index === 0} last={index === lastIndex}>
+          {fieldRenderer(row, {organization, location})}
+        </BodyCell>
+      );
+    });
   };
 
   render() {
@@ -154,7 +153,7 @@ class Table extends React.Component<Props, State> {
       <div>
         <Panel>
           <TableGrid>
-            <HeadCell>{t('Transaction Name')}</HeadCell>
+            <HeadCell first>{t('Transaction Name')}</HeadCell>
             <HeadCell>{t('Project Name')}</HeadCell>
             <HeadCell>{t('Throughput')}</HeadCell>
             <HeadCell>
@@ -169,26 +168,11 @@ class Table extends React.Component<Props, State> {
             <HeadCell>
               <NumericColumn>{t('Apdex')}</NumericColumn>
             </HeadCell>
-            <HeadCell>
+            <HeadCell last>
               <NumericColumn>{t('User Impact')}</NumericColumn>
             </HeadCell>
-            <div>foo</div>
+            {this.renderResults()}
           </TableGrid>
-        </Panel>
-        <Panel>
-          <PanelHeader>
-            <PanelRow>
-              <div>{t('Transaction Name')}</div>
-              <div>{t('Project Name')}</div>
-              <div>{t('Throughput')}</div>
-              <NumericColumn>{t('Error Rate')}</NumericColumn>
-              <NumericColumn>{t('95th')}</NumericColumn>
-              <NumericColumn>{t('Avg')}</NumericColumn>
-              <NumericColumn>{t('Apdex')}</NumericColumn>
-              <NumericColumn>{t('User Impact')}</NumericColumn>
-            </PanelRow>
-          </PanelHeader>
-          <PanelBody>foo</PanelBody>
         </Panel>
         <Pagination pageLinks={this.state.pageLinks} />
       </div>
@@ -202,25 +186,49 @@ const TableGrid = styled('div')`
   width: 100%;
 `;
 
-const HeadCell = styled(PanelHeader)`
+const HeadCell = styled(PanelHeader)<{first?: boolean; last?: boolean}>`
   background-color: ${p => p.theme.offWhite};
   text-overflow: ellipsis;
+
+  padding: ${props => {
+    /* top | right | bottom | left */
+
+    if (props.first) {
+      return `${space(2)} ${space(1)} ${space(2)} ${space(2)}`;
+    }
+
+    if (props.last) {
+      return `${space(2)} ${space(2)} ${space(2)} ${space(1)}`;
+    }
+
+    return `${space(2)} ${space(1)} ${space(2)} ${space(1)}`;
+  }};
 `;
 
-const PanelRow = styled('div')`
-  display: grid;
-  grid-template-columns: 4fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
-  grid-column-gap: ${space(1.5)};
-  width: 100%;
-  align-items: center;
+const BodyCell = styled(PanelItem)<{first?: boolean; last?: boolean}>`
+  text-overflow: ellipsis;
+
+  padding: ${props => {
+    /* top | right | bottom | left */
+
+    if (props.first) {
+      return `${space(2)} ${space(1)} ${space(2)} ${space(2)}`;
+    }
+
+    if (props.last) {
+      return `${space(2)} ${space(2)} ${space(2)} ${space(1)}`;
+    }
+
+    return `${space(2)} ${space(1)} ${space(2)} ${space(1)}`;
+  }};
+`;
+
+const SpanEntireRow = styled('div')`
+  grid-column: 1 / -1;
 `;
 
 const NumericColumn = styled('div')`
   text-align: right;
-`;
-
-const ItemCell = styled('div')`
-  text-overflow: ellipsis;
 `;
 
 export default withApi(Table);

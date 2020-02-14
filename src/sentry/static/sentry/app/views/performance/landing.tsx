@@ -47,27 +47,21 @@ class PerformanceLanding extends React.Component<Props, State> {
       <SentryDocumentTitle title={t('Performance')} objSlug={organization.slug}>
         <React.Fragment>
           <GlobalSelectionHeader organization={organization} />
-          <StyledPageContent>
+          <PageContent>
             <NoProjectMessage organization={organization}>
-              <PageContent>
-                <StyledPageHeader>{t('Performance')}</StyledPageHeader>
-                <Table
-                  eventView={this.state.eventView}
-                  organization={organization}
-                  location={location}
-                />
-              </PageContent>
+              <StyledPageHeader>{t('Performance')}</StyledPageHeader>
+              <Table
+                eventView={this.state.eventView}
+                organization={organization}
+                location={location}
+              />
             </NoProjectMessage>
-          </StyledPageContent>
+          </PageContent>
         </React.Fragment>
       </SentryDocumentTitle>
     );
   }
 }
-
-const StyledPageContent = styled(PageContent)`
-  padding: 0;
-`;
 
 const StyledPageHeader = styled('div')`
   display: flex;
