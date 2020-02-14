@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 
 import {t} from 'app/locale';
 import {Organization} from 'app/types';
+import {assert} from 'app/types/utils';
 import {Client} from 'app/api';
 import withApi from 'app/utils/withApi';
 import space from 'app/styles/space';
@@ -12,7 +13,7 @@ import LoadingIndicator from 'app/components/loadingIndicator';
 import EmptyStateWarning from 'app/components/emptyStateWarning';
 import Pagination from 'app/components/pagination';
 import EventView from 'app/views/eventsV2/eventView';
-import {TableData} from 'app/views/eventsV2/table/types';
+import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/types';
 
 type Props = {
   api: Client;
@@ -92,14 +93,13 @@ class Table extends React.Component<Props, State> {
   };
 
   renderResults = () => {
-    if (this.state.isLoading) {
+    const {isLoading, tableData} = this.state;
+
+    if (isLoading) {
       return <LoadingIndicator />;
     }
 
-    const hasResults =
-      this.state.tableData &&
-      this.state.tableData.data &&
-      this.state.tableData.data.length > 0;
+    const hasResults = tableData && tableData.data && tableData.data.length > 0;
 
     if (!hasResults) {
       return (
@@ -109,12 +109,25 @@ class Table extends React.Component<Props, State> {
       );
     }
 
+    assert(this.state.tableData);
+
+    const columnOrder = this.props.eventView.getColumns();
+
+    return this.state.tableData.data.map((row, index) => {
+      return (
+        <React.Fragment key={index}>
+          {this.renderRowItem(row, columnOrder)}
+        </React.Fragment>
+      );
+    });
+  };
+
+  renderRowItem = (row: TableDataRow, columnOrder: TableColumn<React.ReactText>[]) => {
+    // console.log('row', row, columnOrder);
     return (
-      <React.Fragment>
-        <PanelItem>Panel Item</PanelItem>
-        <PanelItem>Panel Item</PanelItem>
-        <PanelItem>Panel Item</PanelItem>
-      </React.Fragment>
+      <PanelItem>
+        <PanelRow>foo</PanelRow>
+      </PanelItem>
     );
   };
 
@@ -122,7 +135,18 @@ class Table extends React.Component<Props, State> {
     return (
       <div>
         <Panel>
-          <PanelHeader>Panel Header</PanelHeader>
+          <PanelHeader>
+            <PanelRow>
+              <div>{t('Transaction Name')}</div>
+              <div>{t('Project Name')}</div>
+              <div>{t('Throughput')}</div>
+              <NumericColumn>{t('Error Rate')}</NumericColumn>
+              <NumericColumn>{t('95th')}</NumericColumn>
+              <NumericColumn>{t('Avg')}</NumericColumn>
+              <NumericColumn>{t('Apdex')}</NumericColumn>
+              <NumericColumn>{t('User Impact')}</NumericColumn>
+            </PanelRow>
+          </PanelHeader>
           <PanelBody>{this.renderResults()}</PanelBody>
         </Panel>
         <Pagination pageLinks={this.state.pageLinks} />
@@ -131,12 +155,16 @@ class Table extends React.Component<Props, State> {
   }
 }
 
-const RowItem = styled('div')`
+const PanelRow = styled('div')`
   display: grid;
-  grid-template-columns: 4fr 1fr 2fr 1fr 1fr;
+  grid-template-columns: 4fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: ${space(1.5)};
   width: 100%;
   align-items: center;
+`;
+
+const NumericColumn = styled('div')`
+  text-align: right;
 `;
 
 export default withApi(Table);
