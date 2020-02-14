@@ -153,7 +153,7 @@ class Table extends React.Component<Props, State> {
     return (
       <div>
         <Panel>
-          <FooGrid>
+          <TableGrid>
             <HeadCell>{t('Transaction Name')}</HeadCell>
             <HeadCell>{t('Project Name')}</HeadCell>
             <HeadCell>{t('Throughput')}</HeadCell>
@@ -173,7 +173,7 @@ class Table extends React.Component<Props, State> {
               <NumericColumn>{t('User Impact')}</NumericColumn>
             </HeadCell>
             <div>foo</div>
-          </FooGrid>
+          </TableGrid>
         </Panel>
         <Panel>
           <PanelHeader>
@@ -196,15 +196,15 @@ class Table extends React.Component<Props, State> {
   }
 }
 
-const FooGrid = styled('div')`
+const TableGrid = styled('div')`
   display: grid;
   grid-template-columns: 4fr 2fr repeat(6, 1fr);
   width: 100%;
-  align-items: center;
 `;
 
 const HeadCell = styled(PanelHeader)`
   background-color: ${p => p.theme.offWhite};
+  text-overflow: ellipsis;
 `;
 
 const PanelRow = styled('div')`
