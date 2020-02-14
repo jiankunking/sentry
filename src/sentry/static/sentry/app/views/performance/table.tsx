@@ -121,11 +121,14 @@ class Table extends React.Component<Props, State> {
 
     const columnOrder = this.props.eventView.getColumns();
 
+    const lastIndex = tableData.data.length - 1;
     return tableData.data.map((row, index) => {
       assert(tableData.meta);
+
+      const isLastRow = index === lastIndex;
       return (
         <React.Fragment key={index}>
-          {this.renderRowItem(row, columnOrder, tableData.meta)}
+          {this.renderRowItem(row, columnOrder, tableData.meta, isLastRow)}
         </React.Fragment>
       );
     });
@@ -134,7 +137,8 @@ class Table extends React.Component<Props, State> {
   renderRowItem = (
     row: TableDataRow,
     columnOrder: TableColumn<React.ReactText>[],
-    tableMeta: MetaType
+    tableMeta: MetaType,
+    isLastRow: boolean
   ) => {
     const {organization, location} = this.props;
     const lastIndex = columnOrder.length - 1;
@@ -146,17 +150,30 @@ class Table extends React.Component<Props, State> {
       const fieldRenderer = getFieldRenderer(field, tableMeta);
       const rendered = fieldRenderer(row, {organization, location});
 
+      const isFirstCell = index === 0;
+      const isLastCell = index === lastIndex;
+
       const isNumeric = ['integer', 'number', 'duration'].includes(fieldType);
       if (isNumeric) {
         return (
-          <BodyCell key={column.key} first={index === 0} last={index === lastIndex}>
+          <BodyCell
+            key={column.key}
+            first={isFirstCell}
+            last={isLastCell}
+            hideBottomBorder={isLastRow}
+          >
             <NumericColumn>{rendered}</NumericColumn>
           </BodyCell>
         );
       }
 
       return (
-        <BodyCell key={column.key} first={index === 0} last={index === lastIndex}>
+        <BodyCell
+          key={column.key}
+          first={isFirstCell}
+          last={isLastCell}
+          hideBottomBorder={isLastRow}
+        >
           {rendered}
         </BodyCell>
       );
@@ -220,7 +237,11 @@ const HeadCell = styled(PanelHeader)<{first?: boolean; last?: boolean}>`
   }};
 `;
 
-const BodyCell = styled(PanelItem)<{first?: boolean; last?: boolean}>`
+const BodyCell = styled(PanelItem)<{
+  first?: boolean;
+  last?: boolean;
+  hideBottomBorder: boolean;
+}>`
   text-overflow: ellipsis;
 
   padding: ${props => {
@@ -235,6 +256,14 @@ const BodyCell = styled(PanelItem)<{first?: boolean; last?: boolean}>`
     }
 
     return `${space(2)} ${space(1)} ${space(2)} ${space(1)}`;
+  }};
+
+  ${props => {
+    if (props.hideBottomBorder) {
+      return 'border-bottom: none';
+    }
+
+    return null;
   }};
 `;
 
