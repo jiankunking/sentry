@@ -283,6 +283,7 @@ const BodyCell = styled(PanelItem)<{
   last?: boolean;
   hideBottomBorder: boolean;
 }>`
+  display: block;
   text-overflow: ellipsis;
 
   padding: ${props => {
