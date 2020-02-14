@@ -232,7 +232,7 @@ class Table extends React.Component<Props, State> {
 
 const TableGrid = styled('div')`
   display: grid;
-  grid-template-columns: 4fr 2fr repeat(6, 1fr);
+  grid-template-columns: 5fr repeat(7, minmax(50px, 1fr));
   width: 100%;
 `;
 
