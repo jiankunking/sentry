@@ -1,4 +1,5 @@
 import {EventData} from '../data';
+import EventView from '../eventView';
 
 export function generateEventDetailsRoute({
   eventSlug,
@@ -14,4 +15,24 @@ export function generateEventSlug(eventData: EventData): string {
   const id = eventData.id || eventData.latest_event;
 
   return `${eventData['project.name']}:${id}`;
+}
+
+export function eventDetailsRouteWithEventView({
+  orgSlug,
+  eventSlug,
+  eventView,
+}: {
+  orgSlug: string;
+  eventSlug: string;
+  eventView: EventView;
+}) {
+  const pathname = generateEventDetailsRoute({
+    orgSlug,
+    eventSlug,
+  });
+
+  return {
+    pathname,
+    query: eventView.generateQueryStringObject(),
+  };
 }

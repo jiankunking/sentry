@@ -20,8 +20,8 @@ import {TableData, TableDataRow, TableColumn} from 'app/views/eventsV2/table/typ
 import {ColumnValueType} from 'app/views/eventsV2/eventQueryParams';
 import {getFieldRenderer, MetaType, getAggregateAlias} from 'app/views/eventsV2/utils';
 import {
-  generateEventDetailsRoute,
   generateEventSlug,
+  eventDetailsRouteWithEventView,
 } from 'app/views/eventsV2/eventDetails/utils';
 
 type Props = {
@@ -185,15 +185,13 @@ class Table extends React.Component<Props, State> {
         // on Discover
 
         const eventSlug = generateEventSlug(row);
-        const pathname = generateEventDetailsRoute({
+
+        const target = eventDetailsRouteWithEventView({
           orgSlug: organization.slug,
           eventSlug,
+          eventView,
         });
 
-        const target = {
-          pathname,
-          query: eventView.generateQueryStringObject(),
-        };
         rendered = <Link to={target}>{rendered}</Link>;
       }
 

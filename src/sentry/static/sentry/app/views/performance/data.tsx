@@ -10,7 +10,8 @@ export const PERFORMANCE_EVENT_VIEW: Readonly<NewQuery> = {
   fields: [
     'transaction',
     'project',
-    'rpm()',
+    // TODO: rename this to rpm() once it is supported
+    'rpm',
     'error_rate',
     'p95()',
     'avg(transaction.duration)',
