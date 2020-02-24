@@ -30,7 +30,7 @@ export function generatePerformanceQuery(location: Location): Readonly<NewQuery>
   }
 
   if (!query?.sort) {
-    extra.orderby = '-avg_transaction_duration';
+    extra.orderby = '-rpm';
   } else {
     const sort = query?.sort;
     extra.orderby =
@@ -38,7 +38,7 @@ export function generatePerformanceQuery(location: Location): Readonly<NewQuery>
         ? sort[sort.length - 1]
         : typeof sort === 'string'
         ? sort
-        : '-avg_transaction_duration';
+        : '-rpm';
   }
 
   return Object.assign({}, PERFORMANCE_EVENT_VIEW, extra);
