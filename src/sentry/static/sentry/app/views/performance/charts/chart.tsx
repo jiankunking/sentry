@@ -57,7 +57,6 @@ class Chart extends React.Component<Props> {
           router={router}
           query={eventView.getEventsAPIPayload(location).query}
           organization={organization}
-          showLegend
           yAxis={yAxisValue}
           projects={globalSelection.project}
           environments={globalSelection.environment}
