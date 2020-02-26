@@ -13,6 +13,8 @@ import {PageContent} from 'app/styles/organization';
 import NoProjectMessage from 'app/components/noProjectMessage';
 import Alert from 'app/components/alert';
 import EventView from 'app/views/eventsV2/eventView';
+import {getUtcToLocalDateObject} from 'app/utils/dates';
+import {getParams} from 'app/components/organizations/globalSelectionHeader/getParams';
 
 import {generatePerformanceQuery} from './data';
 import Table from './table';
@@ -61,25 +63,57 @@ class PerformanceLanding extends React.Component<Props, State> {
     this.setState({error});
   };
 
+  generateGlobalSelection = () => {
+    const {location} = this.props;
+    const {eventView} = this.state;
+
+    const globalSelection = eventView.getGlobalSelection();
+    const start = globalSelection.start
+      ? getUtcToLocalDateObject(globalSelection.start)
+      : undefined;
+
+    const end = globalSelection.end
+      ? getUtcToLocalDateObject(globalSelection.end)
+      : undefined;
+
+    const {utc} = getParams(location.query);
+
+    return {
+      projects: globalSelection.project,
+      environments: globalSelection.environment,
+      datetime: {
+        start,
+        end,
+        period: globalSelection.statsPeriod,
+        utc: utc === 'true',
+      },
+    };
+  };
+
   render() {
     const {organization, location, router} = this.props;
+    const {eventView} = this.state;
 
     return (
       <SentryDocumentTitle title={t('Performance')} objSlug={organization.slug}>
         <React.Fragment>
-          <GlobalSelectionHeader organization={organization} />
+          <GlobalSelectionHeader
+            organization={organization}
+            selection={this.generateGlobalSelection()}
+            allowClearTimeRange={false}
+          />
           <PageContent>
             <NoProjectMessage organization={organization}>
               <StyledPageHeader>{t('Performance')}</StyledPageHeader>
               {this.renderError()}
               <Charts
-                eventView={this.state.eventView}
+                eventView={eventView}
                 organization={organization}
                 location={location}
                 router={router}
               />
               <Table
-                eventView={this.state.eventView}
+                eventView={eventView}
                 organization={organization}
                 location={location}
                 setError={this.setError}
