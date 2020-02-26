@@ -1,5 +1,5 @@
 import React from 'react';
-import {shallow, mount} from 'sentry-test/enzyme';
+import {mount} from 'sentry-test/enzyme';
 
 import FrameRegisters from 'app/components/events/interfaces/frameRegisters/frameRegisters';
 import FrameRegisterValue from 'app/components/events/interfaces/frameRegisters/frameRegisterValue';
@@ -12,8 +12,8 @@ describe('FrameRegisters', () => {
       r12: '0x0000000000000000',
     };
 
-    const wrapper = shallow(<FrameRegisters data={registers} />);
-    expect(wrapper.find('RegisterValue')).toMatchSnapshot();
+    const wrapper = mount(<FrameRegisters data={registers} />);
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('should skip registers without a value', () => {
@@ -23,8 +23,8 @@ describe('FrameRegisters', () => {
       r12: '0x0000000000000000',
     };
 
-    const wrapper = shallow(<FrameRegisters data={registers} />);
-    expect(wrapper.find('RegisterValue')).toMatchSnapshot();
+    const wrapper = mount(<FrameRegisters data={registers} />);
+    expect(wrapper.find('[data-test-id="frame-register-value"]')).toMatchSnapshot();
   });
 });
 

@@ -1,5 +1,495 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`FrameRegisters should render registers 1`] = `null`;
+exports[`FrameRegisters should render registers 1`] = `
+<FrameRegisters
+  data={
+    Object {
+      "r10": "0x00007fff9300bf70",
+      "r11": "0xffffffffffffffff",
+      "r12": "0x0000000000000000",
+    }
+  }
+>
+  <RegistersWrapper>
+    <div
+      className="css-15mz2lq-RegistersWrapper eijiexa0"
+    >
+      <RegistersHeading>
+        <strong
+          className="css-a8w1uj-RegistersHeading eijiexa3"
+        >
+          registers
+        </strong>
+      </RegistersHeading>
+      <Registers>
+        <div
+          className="css-2rcex2-Registers eijiexa1"
+        >
+          <Register
+            key="r10"
+            onClick={[Function]}
+          >
+            <div
+              className="css-1wnsbwk-Register eijiexa2"
+              onClick={[Function]}
+            >
+              <RegisterName>
+                <span
+                  className="css-1fnh7e-RegisterName eijiexa4"
+                >
+                  r10
+                </span>
+              </RegisterName>
+              <FrameRegisterValue
+                meta={null}
+                value="0x00007fff9300bf70"
+              >
+                <InlinePre
+                  data-test-id="frame-register-value"
+                >
+                  <pre
+                    className="css-quozkg-InlinePre e1w2v1u80"
+                    data-test-id="frame-register-value"
+                  >
+                    <FixedWidth>
+                      <span
+                        className="css-5okdek-FixedWidth e1w2v1u81"
+                      >
+                        0x00007fff9300bf70
+                      </span>
+                    </FixedWidth>
+                    <Tooltip
+                      containerDisplayMode="inline-block"
+                      position="top"
+                      title="Hexadecimal"
+                    >
+                      <Manager>
+                        <Reference>
+                          <InnerReference
+                            setReferenceNode={[Function]}
+                          >
+                            <Container
+                              aria-describedby="tooltip-123456"
+                              containerDisplayMode="inline-block"
+                              onBlur={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                            >
+                              <span
+                                aria-describedby="tooltip-123456"
+                                className="css-sce1yi-Container eowlwvy0"
+                                onBlur={[Function]}
+                                onFocus={[Function]}
+                                onMouseEnter={[Function]}
+                                onMouseLeave={[Function]}
+                              >
+                                <Toggle
+                                  className="icon-filter"
+                                  onClick={[Function]}
+                                >
+                                  <span
+                                    className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                                    onClick={[Function]}
+                                  />
+                                </Toggle>
+                              </span>
+                            </Container>
+                          </InnerReference>
+                        </Reference>
+                      </Manager>
+                    </Tooltip>
+                  </pre>
+                </InlinePre>
+              </FrameRegisterValue>
+            </div>
+          </Register>
+          <Register
+            key="r11"
+            onClick={[Function]}
+          >
+            <div
+              className="css-1wnsbwk-Register eijiexa2"
+              onClick={[Function]}
+            >
+              <RegisterName>
+                <span
+                  className="css-1fnh7e-RegisterName eijiexa4"
+                >
+                  r11
+                </span>
+              </RegisterName>
+              <FrameRegisterValue
+                meta={null}
+                value="0xffffffffffffffff"
+              >
+                <InlinePre
+                  data-test-id="frame-register-value"
+                >
+                  <pre
+                    className="css-quozkg-InlinePre e1w2v1u80"
+                    data-test-id="frame-register-value"
+                  >
+                    <FixedWidth>
+                      <span
+                        className="css-5okdek-FixedWidth e1w2v1u81"
+                      >
+                        0x0000000000000000
+                      </span>
+                    </FixedWidth>
+                    <Tooltip
+                      containerDisplayMode="inline-block"
+                      position="top"
+                      title="Hexadecimal"
+                    >
+                      <Manager>
+                        <Reference>
+                          <InnerReference
+                            setReferenceNode={[Function]}
+                          >
+                            <Container
+                              aria-describedby="tooltip-123456"
+                              containerDisplayMode="inline-block"
+                              onBlur={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                            >
+                              <span
+                                aria-describedby="tooltip-123456"
+                                className="css-sce1yi-Container eowlwvy0"
+                                onBlur={[Function]}
+                                onFocus={[Function]}
+                                onMouseEnter={[Function]}
+                                onMouseLeave={[Function]}
+                              >
+                                <Toggle
+                                  className="icon-filter"
+                                  onClick={[Function]}
+                                >
+                                  <span
+                                    className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                                    onClick={[Function]}
+                                  />
+                                </Toggle>
+                              </span>
+                            </Container>
+                          </InnerReference>
+                        </Reference>
+                      </Manager>
+                    </Tooltip>
+                  </pre>
+                </InlinePre>
+              </FrameRegisterValue>
+            </div>
+          </Register>
+          <Register
+            key="r12"
+            onClick={[Function]}
+          >
+            <div
+              className="css-1wnsbwk-Register eijiexa2"
+              onClick={[Function]}
+            >
+              <RegisterName>
+                <span
+                  className="css-1fnh7e-RegisterName eijiexa4"
+                >
+                  r12
+                </span>
+              </RegisterName>
+              <FrameRegisterValue
+                meta={null}
+                value="0x0000000000000000"
+              >
+                <InlinePre
+                  data-test-id="frame-register-value"
+                >
+                  <pre
+                    className="css-quozkg-InlinePre e1w2v1u80"
+                    data-test-id="frame-register-value"
+                  >
+                    <FixedWidth>
+                      <span
+                        className="css-5okdek-FixedWidth e1w2v1u81"
+                      >
+                        0x0000000000000000
+                      </span>
+                    </FixedWidth>
+                    <Tooltip
+                      containerDisplayMode="inline-block"
+                      position="top"
+                      title="Hexadecimal"
+                    >
+                      <Manager>
+                        <Reference>
+                          <InnerReference
+                            setReferenceNode={[Function]}
+                          >
+                            <Container
+                              aria-describedby="tooltip-123456"
+                              containerDisplayMode="inline-block"
+                              onBlur={[Function]}
+                              onFocus={[Function]}
+                              onMouseEnter={[Function]}
+                              onMouseLeave={[Function]}
+                            >
+                              <span
+                                aria-describedby="tooltip-123456"
+                                className="css-sce1yi-Container eowlwvy0"
+                                onBlur={[Function]}
+                                onFocus={[Function]}
+                                onMouseEnter={[Function]}
+                                onMouseLeave={[Function]}
+                              >
+                                <Toggle
+                                  className="icon-filter"
+                                  onClick={[Function]}
+                                >
+                                  <span
+                                    className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                                    onClick={[Function]}
+                                  />
+                                </Toggle>
+                              </span>
+                            </Container>
+                          </InnerReference>
+                        </Reference>
+                      </Manager>
+                    </Tooltip>
+                  </pre>
+                </InlinePre>
+              </FrameRegisterValue>
+            </div>
+          </Register>
+        </div>
+      </Registers>
+    </div>
+  </RegistersWrapper>
+</FrameRegisters>
+`;
 
-exports[`FrameRegisters should skip registers without a value 1`] = `null`;
+exports[`FrameRegisters should skip registers without a value 1`] = `
+Array [
+  <InlinePre
+    data-test-id="frame-register-value"
+  >
+    <pre
+      className="css-quozkg-InlinePre e1w2v1u80"
+      data-test-id="frame-register-value"
+    >
+      <FixedWidth>
+        <span
+          className="css-5okdek-FixedWidth e1w2v1u81"
+        >
+          0x00007fff9300bf70
+        </span>
+      </FixedWidth>
+      <Tooltip
+        containerDisplayMode="inline-block"
+        position="top"
+        title="Hexadecimal"
+      >
+        <Manager>
+          <Reference>
+            <InnerReference
+              setReferenceNode={[Function]}
+            >
+              <Container
+                aria-describedby="tooltip-123456"
+                containerDisplayMode="inline-block"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                <span
+                  aria-describedby="tooltip-123456"
+                  className="css-sce1yi-Container eowlwvy0"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                >
+                  <Toggle
+                    className="icon-filter"
+                    onClick={[Function]}
+                  >
+                    <span
+                      className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                      onClick={[Function]}
+                    />
+                  </Toggle>
+                </span>
+              </Container>
+            </InnerReference>
+          </Reference>
+        </Manager>
+      </Tooltip>
+    </pre>
+  </InlinePre>,
+  <pre
+    className="css-quozkg-InlinePre e1w2v1u80"
+    data-test-id="frame-register-value"
+  >
+    <FixedWidth>
+      <span
+        className="css-5okdek-FixedWidth e1w2v1u81"
+      >
+        0x00007fff9300bf70
+      </span>
+    </FixedWidth>
+    <Tooltip
+      containerDisplayMode="inline-block"
+      position="top"
+      title="Hexadecimal"
+    >
+      <Manager>
+        <Reference>
+          <InnerReference
+            setReferenceNode={[Function]}
+          >
+            <Container
+              aria-describedby="tooltip-123456"
+              containerDisplayMode="inline-block"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                aria-describedby="tooltip-123456"
+                className="css-sce1yi-Container eowlwvy0"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                <Toggle
+                  className="icon-filter"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                    onClick={[Function]}
+                  />
+                </Toggle>
+              </span>
+            </Container>
+          </InnerReference>
+        </Reference>
+      </Manager>
+    </Tooltip>
+  </pre>,
+  <InlinePre
+    data-test-id="frame-register-value"
+  >
+    <pre
+      className="css-quozkg-InlinePre e1w2v1u80"
+      data-test-id="frame-register-value"
+    >
+      <FixedWidth>
+        <span
+          className="css-5okdek-FixedWidth e1w2v1u81"
+        >
+          0x0000000000000000
+        </span>
+      </FixedWidth>
+      <Tooltip
+        containerDisplayMode="inline-block"
+        position="top"
+        title="Hexadecimal"
+      >
+        <Manager>
+          <Reference>
+            <InnerReference
+              setReferenceNode={[Function]}
+            >
+              <Container
+                aria-describedby="tooltip-123456"
+                containerDisplayMode="inline-block"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                <span
+                  aria-describedby="tooltip-123456"
+                  className="css-sce1yi-Container eowlwvy0"
+                  onBlur={[Function]}
+                  onFocus={[Function]}
+                  onMouseEnter={[Function]}
+                  onMouseLeave={[Function]}
+                >
+                  <Toggle
+                    className="icon-filter"
+                    onClick={[Function]}
+                  >
+                    <span
+                      className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                      onClick={[Function]}
+                    />
+                  </Toggle>
+                </span>
+              </Container>
+            </InnerReference>
+          </Reference>
+        </Manager>
+      </Tooltip>
+    </pre>
+  </InlinePre>,
+  <pre
+    className="css-quozkg-InlinePre e1w2v1u80"
+    data-test-id="frame-register-value"
+  >
+    <FixedWidth>
+      <span
+        className="css-5okdek-FixedWidth e1w2v1u81"
+      >
+        0x0000000000000000
+      </span>
+    </FixedWidth>
+    <Tooltip
+      containerDisplayMode="inline-block"
+      position="top"
+      title="Hexadecimal"
+    >
+      <Manager>
+        <Reference>
+          <InnerReference
+            setReferenceNode={[Function]}
+          >
+            <Container
+              aria-describedby="tooltip-123456"
+              containerDisplayMode="inline-block"
+              onBlur={[Function]}
+              onFocus={[Function]}
+              onMouseEnter={[Function]}
+              onMouseLeave={[Function]}
+            >
+              <span
+                aria-describedby="tooltip-123456"
+                className="css-sce1yi-Container eowlwvy0"
+                onBlur={[Function]}
+                onFocus={[Function]}
+                onMouseEnter={[Function]}
+                onMouseLeave={[Function]}
+              >
+                <Toggle
+                  className="icon-filter"
+                  onClick={[Function]}
+                >
+                  <span
+                    className="icon-filter css-120ji34-Toggle e1w2v1u82"
+                    onClick={[Function]}
+                  />
+                </Toggle>
+              </span>
+            </Container>
+          </InnerReference>
+        </Reference>
+      </Manager>
+    </Tooltip>
+  </pre>,
+]
+`;

@@ -54,7 +54,7 @@ class FrameRegisterValue extends React.Component<Props, State> {
   render() {
     const formattedValue = this.formatValue();
     return (
-      <InlinePre>
+      <InlinePre data-test-id="frame-register-value">
         <FixedWidth>
           {this.props.meta ? (
             <AnnotatedText

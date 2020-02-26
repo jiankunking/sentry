@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {mount, shallow} from 'sentry-test/enzyme';
+import {mount} from 'sentry-test/enzyme';
 import RichHttpContent from 'app/components/events/interfaces/richHttpContent/richHttpContent';
 
 describe('RichHttpContent', function() {
@@ -64,7 +64,7 @@ describe('RichHttpContent', function() {
         cookies: [],
         env: {},
       };
-      expect(() => shallow(<RichHttpContent data={data} />)).not.toThrow(URIError);
+      expect(() => mount(<RichHttpContent data={data} />)).not.toThrow(URIError);
     });
 
     it("should not cause an invariant violation if data.data isn't a string", function() {
