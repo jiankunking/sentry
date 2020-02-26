@@ -25,7 +25,9 @@ export function generatePerformanceQuery(location: Location): Readonly<NewQuery>
 
   const {query} = location;
 
-  if (!query?.statsPeriod) {
+  const hasStartAndEnd = query.start && query.end;
+
+  if (!query?.statsPeriod && !hasStartAndEnd) {
     extra.range = '24h';
   }
 

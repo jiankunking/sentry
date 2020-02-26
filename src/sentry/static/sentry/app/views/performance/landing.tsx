@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import {Location} from 'history';
+import * as ReactRouter from 'react-router';
 
 import {t} from 'app/locale';
 import {Organization} from 'app/types';
@@ -15,10 +16,12 @@ import EventView from 'app/views/eventsV2/eventView';
 
 import {generatePerformanceQuery} from './data';
 import Table from './table';
+import Charts from './charts/index';
 
 type Props = {
   organization: Organization;
   location: Location;
+  router: ReactRouter.InjectedRouter;
 };
 
 type State = {
@@ -37,7 +40,7 @@ class PerformanceLanding extends React.Component<Props, State> {
 
   state = {
     eventView: generatePerformanceEventView(this.props.location),
-    error: undefined,
+    error: 'error',
   };
 
   renderError = () => {
@@ -59,7 +62,7 @@ class PerformanceLanding extends React.Component<Props, State> {
   };
 
   render() {
-    const {organization, location} = this.props;
+    const {organization, location, router} = this.props;
 
     return (
       <SentryDocumentTitle title={t('Performance')} objSlug={organization.slug}>
@@ -69,6 +72,12 @@ class PerformanceLanding extends React.Component<Props, State> {
             <NoProjectMessage organization={organization}>
               <StyledPageHeader>{t('Performance')}</StyledPageHeader>
               {this.renderError()}
+              <Charts
+                eventView={this.state.eventView}
+                organization={organization}
+                location={location}
+                router={router}
+              />
               <Table
                 eventView={this.state.eventView}
                 organization={organization}
